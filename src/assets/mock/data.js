@@ -78,18 +78,52 @@ export const mockFinanceRecords = [
 
 // Mock material database for AI search
 export const mockMaterialDB = [
-  { id: 'M001', name: '卡拉拉白大理石', category: '石材', style: ['现代简约','轻奢','欧式'], color: '白色/灰纹', texture: '抛光/哑光', priceRange: [400, 800], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/marble1/300/300', tags: ['白色','大理石','意大利','高档'] },
-  { id: 'M002', name: '鱼肚灰大理石', category: '石材', style: ['现代简约','新中式'], color: '浅灰/白纹', texture: '哑光/磨砂', priceRange: [350, 650], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/marble2/300/300', tags: ['灰色','大理石','百搭'] },
-  { id: 'M003', name: '微水泥', category: '涂料', style: ['现代简约','侘寂','工业风','北欧'], color: '多色可选', texture: '哑光/微颗粒', priceRange: [80, 200], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/microcement/300/300', tags: ['微水泥','无缝','侘寂','奶油风'] },
-  { id: 'M004', name: '黑胡桃木饰面板', category: '木材', style: ['新中式','北欧','轻奢'], color: '深棕/巧克力色', texture: '木纹/开放漆', priceRange: [250, 400], unit: '㎡', fireproof: 'B2级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/walnut/300/300', tags: ['黑胡桃','木饰面','高档','温暖'] },
-  { id: 'M005', name: '水磨石', category: '石材', style: ['工业风','复古','商业空间'], color: '多色可选', texture: '磨砂/抛光', priceRange: [150, 350], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/terrazzo/300/300', tags: ['水磨石','工业风','复古','耐磨'] },
-  { id: 'M006', name: '锈蚀钢板', category: '金属', style: ['工业风','户外'], color: '铁锈红/棕', texture: '自然锈蚀', priceRange: [200, 400], unit: '㎡', fireproof: 'A级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/corten/300/300', tags: ['锈蚀钢','耐候钢','工业风'] },
-  { id: 'M007', name: '哑光黄铜', category: '金属', style: ['轻奢','新中式','ArtDeco'], color: '古铜色/金色', texture: '拉丝/哑光', priceRange: [300, 600], unit: '㎡', fireproof: 'A级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/brass/300/300', tags: ['黄铜','轻奢','金色','高档'] },
-  { id: 'M008', name: '艺术玻璃', category: '玻璃', style: ['现代简约','轻奢'], color: '多色可选', texture: '磨砂/渐变/夹胶', priceRange: [300, 800], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/artglass/300/300', tags: ['艺术玻璃','渐变','隔断','透光'] },
-  { id: 'M009', name: '夯土墙', category: '涂料', style: ['侘寂','自然风','民宿'], color: '土黄/暖灰', texture: '粗糙/肌理', priceRange: [100, 250], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/rammedearth/300/300', tags: ['夯土','侘寂','肌理','自然'] },
-  { id: 'M010', name: '木纹砖', category: '陶瓷', style: ['北欧','日式','现代简约'], color: '木色多选', texture: '哑光/木纹', priceRange: [60, 180], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/woodtile/300/300', tags: ['木纹砖','瓷砖','仿木','耐磨'] },
-  { id: 'M011', name: '清水混凝土', category: '涂料', style: ['工业风','极简','日式'], color: '灰白/暖灰', texture: '光滑/模板纹', priceRange: [80, 180], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/concrete/300/300', tags: ['清水混凝土','极简','工业风','模板'] },
-  { id: 'M012', name: '岩板', category: '石材', style: ['现代简约','轻奢','商业空间'], color: '多色可选', texture: '哑光/亮光', priceRange: [200, 600], unit: '㎡', fireproof: 'A1级', wearResist: '极高', envLevel: 'E0', image: 'https://picsum.photos/seed/sintered/300/300', tags: ['岩板','大板','耐磨','防火'] },
+  { id: 'M001', name: '卡拉拉白大理石', category: '石材', style: ['现代简约','轻奢','欧式'], color: '白色/灰纹', texture: '抛光/哑光', priceRange: [400, 800], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/marble1/300/300', tags: ['白色','大理石','意大利','高档'], projectPhotos: [
+    { projectId: 'P001', projectName: '蓝山咖啡旗舰店', scene: '大堂地面', image: 'https://picsum.photos/seed/proj-p001-m001/400/300' },
+    { projectId: 'P004', projectName: '云栖精品酒店大堂', scene: '前台背景墙', image: 'https://picsum.photos/seed/proj-p004-m001/400/300' },
+    { projectId: 'P005', projectName: '光合办公空间', scene: '走廊墙面', image: 'https://picsum.photos/seed/proj-p005-m001/400/300' },
+  ]},
+  { id: 'M002', name: '鱼肚灰大理石', category: '石材', style: ['现代简约','新中式'], color: '浅灰/白纹', texture: '哑光/磨砂', priceRange: [350, 650], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/marble2/300/300', tags: ['灰色','大理石','百搭'], projectPhotos: [
+    { projectId: 'P004', projectName: '云栖精品酒店大堂', scene: '大堂地面', image: 'https://picsum.photos/seed/proj-p004-m002/400/300' },
+    { projectId: 'P005', projectName: '光合办公空间', scene: '前台接待区', image: 'https://picsum.photos/seed/proj-p005-m002/400/300' },
+  ]},
+  { id: 'M003', name: '微水泥', category: '涂料', style: ['现代简约','侘寂','工业风','北欧'], color: '多色可选', texture: '哑光/微颗粒', priceRange: [80, 200], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/microcement/300/300', tags: ['微水泥','无缝','侘寂','奶油风'], projectPhotos: [
+    { projectId: 'P002', projectName: '悦庭日料餐厅', scene: '整体墙面', image: 'https://picsum.photos/seed/proj-p002-m003/400/300' },
+    { projectId: 'P006', projectName: '花间堂民宿改造', scene: '客房墙面', image: 'https://picsum.photos/seed/proj-p006-m003/400/300' },
+  ]},
+  { id: 'M004', name: '黑胡桃木饰面板', category: '木材', style: ['新中式','北欧','轻奢'], color: '深棕/巧克力色', texture: '木纹/开放漆', priceRange: [250, 400], unit: '㎡', fireproof: 'B2级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/walnut/300/300', tags: ['黑胡桃','木饰面','高档','温暖'], projectPhotos: [
+    { projectId: 'P004', projectName: '云栖精品酒店大堂', scene: '包厢墙面', image: 'https://picsum.photos/seed/proj-p004-m004/400/300' },
+    { projectId: 'P002', projectName: '悦庭日料餐厅', scene: '吧台饰面', image: 'https://picsum.photos/seed/proj-p002-m004/400/300' },
+  ]},
+  { id: 'M005', name: '水磨石', category: '石材', style: ['工业风','复古','商业空间'], color: '多色可选', texture: '磨砂/抛光', priceRange: [150, 350], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/terrazzo/300/300', tags: ['水磨石','工业风','复古','耐磨'], projectPhotos: [
+    { projectId: 'P003', projectName: 'MASHUP潮牌集合店', scene: '地面', image: 'https://picsum.photos/seed/proj-p003-m005/400/300' },
+    { projectId: 'P005', projectName: '光合办公空间', scene: '茶水间地面', image: 'https://picsum.photos/seed/proj-p005-m005/400/300' },
+  ]},
+  { id: 'M006', name: '锈蚀钢板', category: '金属', style: ['工业风','户外'], color: '铁锈红/棕', texture: '自然锈蚀', priceRange: [200, 400], unit: '㎡', fireproof: 'A级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/corten/300/300', tags: ['锈蚀钢','耐候钢','工业风'], projectPhotos: [
+    { projectId: 'P003', projectName: 'MASHUP潮牌集合店', scene: '外立面', image: 'https://picsum.photos/seed/proj-p003-m006/400/300' },
+  ]},
+  { id: 'M007', name: '哑光黄铜', category: '金属', style: ['轻奢','新中式','ArtDeco'], color: '古铜色/金色', texture: '拉丝/哑光', priceRange: [300, 600], unit: '㎡', fireproof: 'A级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/brass/300/300', tags: ['黄铜','轻奢','金色','高档'], projectPhotos: [
+    { projectId: 'P001', projectName: '蓝山咖啡旗舰店', scene: '踢脚线/收边', image: 'https://picsum.photos/seed/proj-p001-m007/400/300' },
+    { projectId: 'P005', projectName: '光合办公空间', scene: '电梯厅装饰', image: 'https://picsum.photos/seed/proj-p005-m007/400/300' },
+  ]},
+  { id: 'M008', name: '艺术玻璃', category: '玻璃', style: ['现代简约','轻奢'], color: '多色可选', texture: '磨砂/渐变/夹胶', priceRange: [300, 800], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/artglass/300/300', tags: ['艺术玻璃','渐变','隔断','透光'], projectPhotos: [
+    { projectId: 'P001', projectName: '蓝山咖啡旗舰店', scene: '包间隔断', image: 'https://picsum.photos/seed/proj-p001-m008/400/300' },
+  ]},
+  { id: 'M009', name: '夯土墙', category: '涂料', style: ['侘寂','自然风','民宿'], color: '土黄/暖灰', texture: '粗糙/肌理', priceRange: [100, 250], unit: '㎡', fireproof: 'B1级', wearResist: '中', envLevel: 'E0', image: 'https://picsum.photos/seed/rammedearth/300/300', tags: ['夯土','侘寂','肌理','自然'], projectPhotos: [
+    { projectId: 'P006', projectName: '花间堂民宿改造', scene: '庭院墙面', image: 'https://picsum.photos/seed/proj-p006-m009/400/300' },
+    { projectId: 'P002', projectName: '悦庭日料餐厅', scene: '入口门头', image: 'https://picsum.photos/seed/proj-p002-m009/400/300' },
+  ]},
+  { id: 'M010', name: '木纹砖', category: '陶瓷', style: ['北欧','日式','现代简约'], color: '木色多选', texture: '哑光/木纹', priceRange: [60, 180], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/woodtile/300/300', tags: ['木纹砖','瓷砖','仿木','耐磨'], projectPhotos: [
+    { projectId: 'P006', projectName: '花间堂民宿改造', scene: '客房地面', image: 'https://picsum.photos/seed/proj-p006-m010/400/300' },
+    { projectId: 'P002', projectName: '悦庭日料餐厅', scene: '包厢地面', image: 'https://picsum.photos/seed/proj-p002-m010/400/300' },
+  ]},
+  { id: 'M011', name: '清水混凝土', category: '涂料', style: ['工业风','极简','日式'], color: '灰白/暖灰', texture: '光滑/模板纹', priceRange: [80, 180], unit: '㎡', fireproof: 'A1级', wearResist: '高', envLevel: 'E0', image: 'https://picsum.photos/seed/concrete/300/300', tags: ['清水混凝土','极简','工业风','模板'], projectPhotos: [
+    { projectId: 'P003', projectName: 'MASHUP潮牌集合店', scene: '室内墙面', image: 'https://picsum.photos/seed/proj-p003-m011/400/300' },
+  ]},
+  { id: 'M012', name: '岩板', category: '石材', style: ['现代简约','轻奢','商业空间'], color: '多色可选', texture: '哑光/亮光', priceRange: [200, 600], unit: '㎡', fireproof: 'A1级', wearResist: '极高', envLevel: 'E0', image: 'https://picsum.photos/seed/sintered/300/300', tags: ['岩板','大板','耐磨','防火'], projectPhotos: [
+    { projectId: 'P001', projectName: '蓝山咖啡旗舰店', scene: '餐台面板', image: 'https://picsum.photos/seed/proj-p001-m012/400/300' },
+    { projectId: 'P005', projectName: '光合办公空间', scene: '茶歇区台面', image: 'https://picsum.photos/seed/proj-p005-m012/400/300' },
+  ]},
 ]
 
 // Dashboard stats

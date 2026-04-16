@@ -8,7 +8,7 @@
     <div class="login-card">
       <div class="login-header">
         <div class="login-logo">M</div>
-        <h1>MatEx · 智能材料系统</h1>
+        <h1>MatFlow · 智能材料系统</h1>
         <p>品牌空间设计公司 · 材料与供应链智能决策平台</p>
       </div>
       <el-form :model="form" @submit.prevent="handleLogin" class="login-form">
@@ -53,9 +53,9 @@ function handleLogin() {
   loading.value = true
   setTimeout(() => {
     const roleMap = { designer: '设计师/PM', purchaser: '采购专员', warehouse: '仓库管理员', finance: '财务', boss: '公司老板' }
-    appStore.setUser({ name: form.username || '管理员', role: roleMap[form.role] || '设计师/PM' })
+    appStore.setUser({ name: form.username || '管理员', role: form.role, roleLabel: roleMap[form.role] || '设计师/PM', avatar: '' })
     loading.value = false
-    ElMessage.success('登录成功')
+    ElMessage.success(`欢迎，${roleMap[form.role]}`)
     router.push('/dashboard')
   }, 800)
 }

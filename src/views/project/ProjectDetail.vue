@@ -20,6 +20,22 @@
       </el-row>
     </el-card>
 
+    <!-- Construction Party Info -->
+    <el-card shadow="hover" style="margin-top:12px;" v-if="constructionParty">
+      <template #header>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-weight:600;">施工方信息</span>
+          <el-button size="small" text type="primary">编辑</el-button>
+        </div>
+      </template>
+      <el-row :gutter="24">
+        <el-col :span="6"><div class="cp-item"><div class="cp-label">施工方</div><div class="cp-value">{{ constructionParty.company }}</div></div></el-col>
+        <el-col :span="6"><div class="cp-item"><div class="cp-label">联系人</div><div class="cp-value">{{ constructionParty.contact }}</div></div></el-col>
+        <el-col :span="6"><div class="cp-item"><div class="cp-label">电话</div><div class="cp-value">{{ constructionParty.phone }}</div></div></el-col>
+        <el-col :span="6"><div class="cp-item"><div class="cp-label">施工范围</div><div class="cp-value">{{ constructionParty.scope }}</div></div></el-col>
+      </el-row>
+    </el-card>
+
     <!-- Tabs -->
     <el-tabs v-model="activeTab" style="margin-top:16px;">
       <el-tab-pane label="BOM清单" name="bom">
@@ -115,6 +131,17 @@ const costBreakdown = [
   { name: '木材', pct: 18, color: '#e6a23c' }, { name: '金属', pct: 12, color: '#f56c6c' }, { name: '其他', pct: 8, color: '#909399' },
 ]
 
+const constructionParties = {
+  'P001': { company: '精工装饰工程有限公司', contact: '王建国', phone: '138-0000-1234', scope: '大堂地面、前台背景墙' },
+  'P002': { company: '鸿宇空间装饰', contact: '李明辉', phone: '139-0000-5678', scope: '全区域施工' },
+  'P003': { company: '盛世华庭装饰集团', contact: '张伟', phone: '136-0000-9012', scope: '全区域施工' },
+  'P004': { company: '锐创建筑装饰', contact: '刘洋', phone: '137-0000-3456', scope: '外立面、大堂' },
+  'P005': { company: '鸿宇空间装饰', contact: '李明辉', phone: '139-0000-5678', scope: '全区域施工' },
+  'P006': { company: '精工装饰工程有限公司', contact: '王建国', phone: '138-0000-1234', scope: '全区域施工' },
+}
+
+const constructionParty = computed(() => constructionParties[route.params.id] || null)
+
 function statusType(s) { return s === '进行中' ? '' : s === '已完工' ? 'success' : 'warning' }
 function bomStatusType(s) { return s === '已到货' || s === '已采购' ? 'success' : s.startsWith('待') ? 'warning' : 'info' }
 </script>
@@ -135,4 +162,8 @@ function bomStatusType(s) { return s === '已到货' || s === '已采购' ? 'suc
 .cost-bar-track { flex: 1; height: 16px; background: #f5f7fa; border-radius: 8px; overflow: hidden; }
 .cost-bar-fill { height: 100%; border-radius: 8px; transition: width 0.6s; }
 .cost-bar-val { width: 40px; font-size: 12px; color: #909399; font-weight: 600; }
+
+.cp-item { text-align: center; }
+.cp-label { font-size: 12px; color: #909399; margin-bottom: 4px; }
+.cp-value { font-size: 14px; font-weight: 600; color: #303133; }
 </style>

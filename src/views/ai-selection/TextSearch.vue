@@ -63,7 +63,7 @@
             </div>
             <div class="mc-bottom">
               <div class="mc-price">¥{{ m.priceRange[0] }}-{{ m.priceRange[1] }}<small>/{{ m.unit }}</small></div>
-              <el-button size="small" type="primary" plain>选入</el-button>
+              <el-button size="small" type="primary" plain @click="selectDialog.open(m)">选入</el-button>
             </div>
           </div>
         </el-card>
@@ -76,7 +76,8 @@
           <template #default="{row}">
             <div style="display:flex;align-items:center;gap:10px;">
               <img :src="row.image" style="width:48px;height:48px;border-radius:6px;object-fit:cover;" />
-              <div><div style="font-weight:600;">{{ row.name }}</div><div style="font-size:12px;color:#909399;">{{ row.category }}</div></div>
+              <div style="font-weight:600;">{{ row.name }}</div>
+              <div style="font-size:12px;color:#909399;">{{ row.category }}</div>
             </div>
           </template>
         </el-table-column>
@@ -100,21 +101,25 @@
           <template #default="{row}"><span style="font-weight:700;color:#667eea;">{{ row.relevance }}%</span></template>
         </el-table-column>
         <el-table-column label="操作" width="140" fixed="right">
-          <template #default>
-            <el-button size="small" type="primary" plain>选入方案</el-button>
+          <template #default="{row}">
+            <el-button size="small" type="primary" plain @click="selectDialog.open(row)">选入方案</el-button>
             <el-button size="small">找平替</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+
+    <SelectMaterialDialog ref="selectDialog" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { mockMaterialDB } from '../../assets/mock/data'
+import SelectMaterialDialog from '../../components/SelectMaterialDialog.vue'
 
 const query = ref('')
+const selectDialog = ref(null)
 const searching = ref(false)
 const results = ref([])
 const viewMode = ref('grid')

@@ -106,7 +106,7 @@
                 <div>元/{{ r.unit }}</div>
               </div>
               <div class="result-actions">
-                <el-button size="small" type="primary" plain>选入方案</el-button>
+                <el-button size="small" type="primary" plain @click="selectDialog.open(r)">选入方案</el-button>
                 <el-button size="small" @click="$router.push('/ai-selection/alternative')">找平替</el-button>
               </div>
             </div>
@@ -114,14 +114,18 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <SelectMaterialDialog ref="selectDialog" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { mockMaterialDB } from '../../assets/mock/data'
+import SelectMaterialDialog from '../../components/SelectMaterialDialog.vue'
 
 const fileInput = ref(null)
+const selectDialog = ref(null)
 const previewUrl = ref('')
 const searching = ref(false)
 const searchStep = ref(0)

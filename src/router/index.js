@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useAppStore } from '../stores/app'
+import { ROUTE_MODULE_MAP } from '../stores/app'
 
 const routes = [
   { path: '/login', name: 'Login', component: () => import('../views/Login.vue'), meta: { title: '登录' } },
@@ -40,6 +42,30 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+// Permission guard
+router.beforeEach((to, from, next) => {
+  // Allow login page
+  if (to.path === '/login') return next()
+
+  // Check if user is logged in
+  const appStore = useAppStore()
+  if (!appStore.user.role) {
+    return next('/login')
+  }
+
+  // Check module permission
+  const moduleName = ROUTE_MODULE_MAP[to.path]
+
+  if (moduleName) {
+    const level = appStore.getModuleLevel(moduleName)
+    if (level === 'none') {
+      return next('/dashboard')
+    }
+  }
+
+  next()
 })
 
 export default router

@@ -5,77 +5,38 @@
       <div class="logo-area">
         <div class="logo-icon">M</div>
         <transition name="fade">
-          <span v-if="!collapsed" class="logo-text">MatEx · 智能材料系统</span>
+          <span v-if="!collapsed" class="logo-text">MatFlow</span>
         </transition>
       </div>
 
       <el-menu :default-active="activeMenu" :collapse="collapsed" :collapse-transition="false"
         router class="sidebar-menu" background-color="#1a1f36" text-color="#a0aec0" active-text-color="#fff">
         
-        <el-menu-item index="/dashboard">
-          <el-icon><Odometer /></el-icon>
-          <template #title>工作台</template>
+        <el-menu-item v-for="item in visibleMenus" :key="item.index"
+          :index="item.index"
+          :class="{'is-readonly': item.readonlyHint}">
+          <el-icon><component :is="item.icon" /></el-icon>
+          <template #title>{{ item.title }}</template>
+          <span v-if="item.badge" class="ai-badge" style="margin-left:auto;font-size:10px;">{{ item.badge }}</span>
+          <el-icon v-if="item.readonlyHint" class="readonly-icon"><View /></el-icon>
         </el-menu-item>
 
-        <el-sub-menu index="ai">
-          <template #title>
-            <el-icon><MagicStick /></el-icon>
-            <span>AI智能选材</span>
-            <span class="ai-badge" style="margin-left:auto;font-size:10px;">AI</span>
-          </template>
-          <el-menu-item index="/ai-selection/image-search"><el-icon><Picture /></el-icon>图搜图</el-menu-item>
-          <el-menu-item index="/ai-selection/text-search"><el-icon><Search /></el-icon>语意搜材</el-menu-item>
-          <el-menu-item index="/ai-selection/alternative"><el-icon><Refresh /></el-icon>平替推荐</el-menu-item>
-        </el-sub-menu>
-
-        <el-sub-menu index="project">
-          <template #title>
-            <el-icon><Folder /></el-icon>
-            <span>项目管理</span>
-          </template>
-          <el-menu-item index="/projects"><el-icon><List /></el-icon>项目列表</el-menu-item>
-          <el-menu-item index="/bom"><el-icon><Document /></el-icon>BOM管理</el-menu-item>
-        </el-sub-menu>
-
-        <el-sub-menu index="purchase">
-          <template #title>
-            <el-icon><ShoppingCart /></el-icon>
-            <span>采购执行</span>
-          </template>
-          <el-menu-item index="/suppliers"><el-icon><OfficeBuilding /></el-icon>供应商管理</el-menu-item>
-          <el-menu-item index="/purchase-orders"><el-icon><Tickets /></el-icon>采购订单</el-menu-item>
-          <el-menu-item index="/contracts"><el-icon><Notebook /></el-icon>合同管理</el-menu-item>
-        </el-sub-menu>
-
-        <el-menu-item index="/sampling">
-          <el-icon><Stamp /></el-icon>
-          <template #title>打样管理</template>
-        </el-menu-item>
-
-        <el-menu-item index="/receiving">
-          <el-icon><Box /></el-icon>
-          <template #title>收货验收</template>
-        </el-menu-item>
-
-        <el-menu-item index="/warehouse">
-          <el-icon><House /></el-icon>
-          <template #title>仓库管理</template>
-        </el-menu-item>
-
-        <el-menu-item index="/construction">
-          <el-icon><SetUp /></el-icon>
-          <template #title>施工反馈</template>
-        </el-menu-item>
-
-        <el-menu-item index="/finance">
-          <el-icon><Money /></el-icon>
-          <template #title>财务结算</template>
-        </el-menu-item>
-
-        <el-menu-item index="/decision">
-          <el-icon><DataAnalysis /></el-icon>
-          <template #title>经营决策</template>
-        </el-menu-item>
+        <template v-for="item in visibleSubMenus" :key="item.index">
+          <el-sub-menu :index="item.index">
+            <template #title>
+              <el-icon><component :is="item.icon" /></el-icon>
+              <span>{{ item.title }}</span>
+              <span v-if="item.badge" class="ai-badge" style="margin-left:auto;font-size:10px;">{{ item.badge }}</span>
+              <el-icon v-if="item.readonlyHint" class="readonly-icon"><View /></el-icon>
+            </template>
+            <el-menu-item v-for="child in item.children" :key="child.index"
+              :index="child.index"
+              :class="{'is-readonly': child.readonlyHint}">
+              <el-icon><component :is="child.icon" /></el-icon>
+              {{ child.title }}
+            </el-menu-item>
+          </el-sub-menu>
+        </template>
       </el-menu>
     </el-aside>
 
@@ -90,14 +51,42 @@
           </el-breadcrumb>
         </div>
         <div class="topbar-right">
-          <el-badge :value="3" :max="99">
-            <el-icon :size="20" style="cursor:pointer"><Bell /></el-icon>
-          </el-badge>
+          <el-popover placement="bottom-end" :width="360" trigger="click" v-model:visible="showNotifications">
+            <template #reference>
+              <el-badge :value="notifications.filter(n => !n.read).length" :max="99" style="cursor:pointer;">
+                <el-icon :size="20"><Bell /></el-icon>
+              </el-badge>
+            </template>
+            <div class="notification-panel">
+              <div class="np-header">
+                <span style="font-weight:600;font-size:15px;">消息中心</span>
+                <el-button text size="small" type="primary" @click="markAllRead">全部已读</el-button>
+              </div>
+              <div class="np-tabs">
+                <el-radio-group v-model="notifFilter" size="small">
+                  <el-radio-button value="all">全部 ({{ notifications.length }})</el-radio-button>
+                  <el-radio-button value="unread">未读 ({{ notifications.filter(n => !n.read).length }})</el-radio-button>
+                </el-radio-group>
+              </div>
+              <div class="np-list">
+                <div v-for="n in filteredNotifications" :key="n.id" class="np-item" :class="{unread: !n.read}" @click="readNotif(n)">
+                  <div class="np-dot" v-if="!n.read"></div>
+                  <div class="np-content">
+                    <div class="np-title">{{ n.title }}</div>
+                    <div class="np-desc">{{ n.desc }}</div>
+                    <div class="np-time">{{ n.time }}</div>
+                  </div>
+                  <el-tag :type="n.tagType" size="small" effect="plain">{{ n.tag }}</el-tag>
+                </div>
+                <div v-if="!filteredNotifications.length" class="np-empty">暂无消息</div>
+              </div>
+            </div>
+          </el-popover>
           <el-dropdown @command="handleCommand">
             <div class="user-info">
               <el-avatar :size="32" style="background:#5b9bd5">张</el-avatar>
               <span class="user-name">{{ userStore.user.name }}</span>
-              <span class="user-role">{{ userStore.user.role }}</span>
+              <span class="user-role">{{ userStore.user.roleLabel || userStore.user.role }}</span>
             </div>
             <template #dropdown>
               <el-dropdown-menu>
@@ -122,7 +111,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '../stores/app'
 
@@ -132,6 +121,39 @@ const userStore = useAppStore()
 
 const collapsed = computed(() => userStore.sidebarCollapsed)
 const activeMenu = computed(() => route.path)
+
+const showNotifications = ref(false)
+const notifFilter = ref('all')
+
+const notifications = ref([
+  { id: 1, title: '打样确认提醒', desc: '蓝山咖啡-黄铜踢脚线样品已到，请尽快确认封样', time: '10分钟前', tag: '打样', tagType: 'warning', read: false },
+  { id: 2, title: '采购订单状态更新', desc: 'PO-2026-005 光语照明灯具已发货，预计4/15到达', time: '30分钟前', tag: '采购', tagType: '', read: false },
+  { id: 3, title: '付款到期提醒', desc: '石材源供应链尾款¥4.08万将于4/18到期', time: '1小时前', tag: '财务', tagType: 'danger', read: false },
+  { id: 4, title: '库存预警', desc: '卡拉拉白大理石当前库存12㎡，低于安全库存50㎡', time: '2小时前', tag: '仓库', tagType: 'warning', read: true },
+  { id: 5, title: '项目审批通知', desc: 'MASHUP潮牌店预算¥48万已提交，待老板审批', time: '3小时前', tag: '审批', tagType: '', read: true },
+  { id: 6, title: '施工反馈', desc: '蓝山咖啡项目-大堂地面石材色差问题反馈', time: '昨天 16:30', tag: '施工', tagType: 'warning', read: true },
+])
+
+const filteredNotifications = computed(() => {
+  if (notifFilter.value === 'unread') return notifications.value.filter(n => !n.read)
+  return notifications.value
+})
+
+function readNotif(n) {
+  n.read = true
+}
+function markAllRead() {
+  notifications.value.forEach(n => { n.read = true })
+}
+
+// Build visible menus with readonly hints
+const visibleMenus = computed(() => {
+  return userStore.getVisibleMenus().filter(item => !item.children)
+})
+
+const visibleSubMenus = computed(() => {
+  return userStore.getVisibleMenus().filter(item => item.children)
+})
 
 function toggle() { userStore.toggleSidebar() }
 function handleCommand(cmd) {
@@ -168,8 +190,10 @@ function handleCommand(cmd) {
 }
 .sidebar-menu:not(.el-menu--collapse) { width: 220px; }
 .sidebar-menu .el-menu-item.is-active { background: rgba(102, 126, 234, 0.2) !important; border-left: 3px solid #667eea; }
+.sidebar-menu .el-menu-item.is-readonly:not(.is-active) { opacity: 0.7; }
 .sidebar-menu .el-sub-menu .el-menu-item { padding-left: 50px !important; min-width: 0; }
 .sidebar-menu .el-sub-menu__title:hover, .sidebar-menu .el-menu-item:hover { background: rgba(255,255,255,0.06) !important; }
+.readonly-icon { color: #a0aec0; font-size: 14px; margin-left: auto; opacity: 0.7; }
 
 .main-container { background: #f0f2f5; }
 
@@ -187,4 +211,20 @@ function handleCommand(cmd) {
 .user-role { font-size: 11px; color: #909399; background: #f0f2f5; padding: 1px 6px; border-radius: 3px; }
 
 .content-area { padding: 20px; overflow-y: auto; height: calc(100vh - 56px); }
+
+/* Notification Panel */
+.notification-panel { }
+.np-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.np-tabs { margin-bottom: 12px; }
+.np-list { max-height: 360px; overflow-y: auto; }
+.np-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 8px; cursor: pointer; transition: background 0.2s; position: relative; }
+.np-item:hover { background: #f5f7fa; }
+.np-item.unread { background: #f0f5ff; }
+.np-item.unread:hover { background: #e8eeff; }
+.np-dot { width: 8px; height: 8px; border-radius: 50%; background: #409eff; flex-shrink: 0; margin-top: 6px; }
+.np-content { flex: 1; min-width: 0; }
+.np-title { font-size: 13px; font-weight: 600; color: #303133; margin-bottom: 4px; }
+.np-desc { font-size: 12px; color: #606266; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.np-time { font-size: 11px; color: #c0c4cc; margin-top: 4px; }
+.np-empty { text-align: center; color: #c0c4cc; padding: 40px 0; font-size: 14px; }
 </style>
