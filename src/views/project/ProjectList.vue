@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="()=>{}">搜索</el-button>
-          <el-button @click="filter={status:'',designer:'',keyword:''}">重置</el-button>
+          <el-button @click="filter.status='';filter.designer='';filter.keyword=''">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
