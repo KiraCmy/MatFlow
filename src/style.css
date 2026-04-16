@@ -45,3 +45,20 @@ html, body, #app { height: 100%; font-family: 'PingFang SC', 'Microsoft YaHei', 
 }
 .module-header h2 { font-size: 20px; font-weight: 600; color: #303133; }
 .module-header .module-desc { font-size: 13px; color: #909399; margin-top: 4px; }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .el-dialog { width: 92% !important; margin: 8px auto !important; }
+  .el-drawer { width: 90% !important; }
+  .el-message-box { width: 88% !important; }
+  .module-header h2 { font-size: 17px; }
+  .module-header .module-desc { font-size: 12px; }
+
+  /* Make tables horizontally scrollable */
+  .el-table { font-size: 12px; }
+  .el-table .el-button { padding: 5px 8px; font-size: 12px; }
+
+  /* Page padding */
+  .page { padding: 16px !important; }
+}
+

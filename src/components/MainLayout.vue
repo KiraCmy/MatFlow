@@ -1,7 +1,10 @@
 <template>
   <el-container class="main-layout">
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" v-if="mobileMenuOpen" @click="mobileMenuOpen = false"></div>
+
     <!-- Sidebar -->
-    <el-aside :width="collapsed ? '64px' : '220px'" class="sidebar">
+    <el-aside :width="collapsed ? '64px' : '220px'" class="sidebar" :class="{'mobile-open': mobileMenuOpen}">
       <div class="logo-area">
         <div class="logo-icon">M</div>
         <transition name="fade">
@@ -14,7 +17,8 @@
         
         <el-menu-item v-for="item in visibleMenus" :key="item.index"
           :index="item.index"
-          :class="{'is-readonly': item.readonlyHint}">
+          :class="{'is-readonly': item.readonlyHint}"
+          @click="mobileMenuOpen = false">
           <el-icon><component :is="item.icon" /></el-icon>
           <template #title>{{ item.title }}</template>
           <span v-if="item.badge" class="ai-badge" style="margin-left:auto;font-size:10px;">{{ item.badge }}</span>
@@ -31,7 +35,8 @@
             </template>
             <el-menu-item v-for="child in item.children" :key="child.index"
               :index="child.index"
-              :class="{'is-readonly': child.readonlyHint}">
+              :class="{'is-readonly': child.readonlyHint}"
+              @click="mobileMenuOpen = false">
               <el-icon><component :is="child.icon" /></el-icon>
               {{ child.title }}
             </el-menu-item>
@@ -85,8 +90,8 @@
           <el-dropdown @command="handleCommand">
             <div class="user-info">
               <el-avatar :size="32" style="background:#5b9bd5">张</el-avatar>
-              <span class="user-name">{{ userStore.user.name }}</span>
-              <span class="user-role">{{ userStore.user.roleLabel || userStore.user.role }}</span>
+              <span class="user-name user-name-desktop">{{ userStore.user.name }}</span>
+              <span class="user-role user-role-desktop">{{ userStore.user.roleLabel || userStore.user.role }}</span>
             </div>
             <template #dropdown>
               <el-dropdown-menu>
@@ -122,6 +127,8 @@ const userStore = useAppStore()
 const collapsed = computed(() => userStore.sidebarCollapsed)
 const activeMenu = computed(() => route.path)
 
+const mobileMenuOpen = ref(false)
+
 const showNotifications = ref(false)
 const notifFilter = ref('all')
 
@@ -155,7 +162,13 @@ const visibleSubMenus = computed(() => {
   return userStore.getVisibleMenus().filter(item => item.children)
 })
 
-function toggle() { userStore.toggleSidebar() }
+function toggle() {
+  if (window.innerWidth <= 768) {
+    mobileMenuOpen.value = !mobileMenuOpen.value
+  } else {
+    userStore.toggleSidebar()
+  }
+}
 function handleCommand(cmd) {
   if (cmd === 'logout') router.push('/login')
 }
@@ -169,6 +182,7 @@ function handleCommand(cmd) {
   overflow: hidden;
   transition: width 0.3s ease;
   box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+  z-index: 1001;
 }
 .logo-area {
   display: flex; align-items: center; gap: 10px;
@@ -194,6 +208,15 @@ function handleCommand(cmd) {
 .sidebar-menu .el-sub-menu .el-menu-item { padding-left: 50px !important; min-width: 0; }
 .sidebar-menu .el-sub-menu__title:hover, .sidebar-menu .el-menu-item:hover { background: rgba(255,255,255,0.06) !important; }
 .readonly-icon { color: #a0aec0; font-size: 14px; margin-left: auto; opacity: 0.7; }
+
+/* Mobile overlay */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
 
 .main-container { background: #f0f2f5; }
 
@@ -227,4 +250,41 @@ function handleCommand(cmd) {
 .np-desc { font-size: 12px; color: #606266; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .np-time { font-size: 11px; color: #c0c4cc; margin-top: 4px; }
 .np-empty { text-align: center; color: #c0c4cc; padding: 40px 0; font-size: 14px; }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .mobile-overlay.active,
+  .sidebar.mobile-open ~ .mobile-overlay {
+    display: block;
+  }
+  .mobile-overlay {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    width: 220px !important;
+    transition: left 0.3s ease;
+  }
+  .sidebar.mobile-open {
+    left: 0;
+  }
+  .sidebar .el-menu--collapse {
+    width: 220px !important;
+  }
+  .sidebar-menu { height: calc(100vh - 60px); }
+
+  .topbar { padding: 0 12px; height: 50px; }
+  .topbar-left { gap: 10px; }
+  .topbar-right { gap: 12px; }
+  .user-name-desktop { display: none; }
+  .user-role-desktop { display: none; }
+
+  .content-area { padding: 12px; height: calc(100vh - 50px); }
+
+  .np-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
 </style>

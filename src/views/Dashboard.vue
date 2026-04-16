@@ -16,7 +16,7 @@
 
     <!-- Stats Row -->
     <el-row :gutter="16" class="stats-row">
-      <el-col :span="6" v-for="s in roleConfig.stats" :key="s.label">
+      <el-col :xs="12" :sm="12" :md="6" v-for="s in roleConfig.stats" :key="s.label">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-icon" :style="{background: s.bg}"><el-icon :size="24" :color="s.color"><component :is="s.icon" /></el-icon></div>
           <div class="stat-info">
@@ -33,7 +33,7 @@
 
     <el-row :gutter="16">
       <!-- Left column -->
-      <el-col :span="16">
+      <el-col :xs="24" :sm="24" :md="16">
         <!-- Main content card: role-specific -->
         <el-card shadow="hover" class="card">
           <template #header>
@@ -155,8 +155,8 @@
               <span class="ai-badge">实时</span>
             </div>
           </template>
-          <el-row :gutter="16">
-            <el-col :span="8" v-for="ai in aiStats" :key="ai.title">
+          <el-row :gutter="12">
+            <el-col :xs="24" :sm="8" v-for="ai in aiStats" :key="ai.title">
               <div class="ai-stat-item" :style="{borderColor: ai.color}">
                 <div class="ai-stat-num" :style="{color: ai.color}">{{ ai.value }}</div>
                 <div class="ai-stat-title">{{ ai.title }}</div>
@@ -173,8 +173,8 @@
               <span style="font-weight:600;">供应商动态</span>
             </div>
           </template>
-          <el-row :gutter="16">
-            <el-col :span="8" v-for="s in supplierStats" :key="s.title">
+          <el-row :gutter="12">
+            <el-col :xs="24" :sm="8" v-for="s in supplierStats" :key="s.title">
               <div class="ai-stat-item" :style="{borderColor: s.color}">
                 <div class="ai-stat-num" :style="{color: s.color}">{{ s.value }}</div>
                 <div class="ai-stat-title">{{ s.title }}</div>
@@ -211,8 +211,8 @@
               <span class="ai-badge">AI预测</span>
             </div>
           </template>
-          <el-row :gutter="16">
-            <el-col :span="8" v-for="p in profitStats" :key="p.title">
+          <el-row :gutter="12">
+            <el-col :xs="24" :sm="8" v-for="p in profitStats" :key="p.title">
               <div class="ai-stat-item" :style="{borderColor: p.color}">
                 <div class="ai-stat-num" :style="{color: p.color}">{{ p.value }}</div>
                 <div class="ai-stat-title">{{ p.title }}</div>
@@ -224,7 +224,7 @@
       </el-col>
 
       <!-- Right column -->
-      <el-col :span="8">
+      <el-col :xs="24" :sm="24" :md="8">
         <!-- Quick Actions -->
         <el-card shadow="hover" class="card">
           <template #header><span style="font-weight:600;">快捷操作</span></template>
@@ -579,4 +579,33 @@ function getProgressColor(p) { return p > 80 ? '#67c23a' : p > 40 ? '#e6a23c' : 
 .budget-name { font-size: 13px; color: #606266; }
 .budget-pct { font-size: 14px; font-weight: 700; }
 .budget-detail { font-size: 12px; color: #909399; margin-top: 4px; }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .dashboard { max-width: 100%; }
+  .welcome-banner {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .welcome-text h2 { font-size: 18px; }
+  .welcome-text p { font-size: 12px; }
+  .welcome-actions { display: flex; gap: 8px; width: 100%; }
+  .welcome-actions .el-button { flex: 1; font-size: 13px; }
+
+  .stat-card { padding: 14px 12px; }
+  .stat-icon { width: 40px; height: 40px; }
+  .stat-value { font-size: 20px; }
+  .stat-label { font-size: 12px; }
+
+  .ai-stat-item { padding: 14px 8px; }
+  .ai-stat-num { font-size: 24px; }
+
+  .module-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+  /* Force tables to scroll horizontally on mobile */
+  :deep(.el-table) { font-size: 13px; }
+  :deep(.el-card__body) { padding: 14px; }
+}
 </style>

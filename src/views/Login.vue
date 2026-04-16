@@ -88,4 +88,21 @@ function handleLogin() {
 
 .login-form { margin-bottom: 20px; }
 .login-footer { text-align: center; font-size: 12px; color: #b0b5c3; }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .login-card {
+    width: calc(100% - 32px);
+    max-width: 420px;
+    padding: 32px 24px;
+    margin: 16px;
+  }
+  .login-header { margin-bottom: 24px; }
+  .login-logo { width: 48px; height: 48px; font-size: 20px; }
+  .login-header h1 { font-size: 18px; }
+  .login-header p { font-size: 12px; }
+  .login-bg-circle.c1 { width: 200px; height: 200px; }
+  .login-bg-circle.c2 { width: 150px; height: 150px; }
+  .login-bg-circle.c3 { width: 100px; height: 100px; }
+}
 </style>
